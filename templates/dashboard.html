@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block title %}Hapvida | Dashboard{% endblock %}
+
+{% block content %}
+
+{# KPIs #}
+<div class="hap-kpi-grid">
+    <div class="hap-kpi">
+        <div class="kpi-label">Beneficiarios ativos</div>
+        <div class="kpi-value">4,82 mi</div>
+        <div class="kpi-delta up">+2,1% MoM</div>
+    </div>
+    <div class="hap-kpi">
+        <div class="kpi-label">Sinistralidade</div>
+        <div class="kpi-value">72,4%</div>
+        <div class="kpi-delta down">-0,8 p.p.</div>
+    </div>
+    <div class="hap-kpi">
+        <div class="kpi-label">NPS</div>
+        <div class="kpi-value">61</div>
+        <div class="kpi-delta up">+3 pts</div>
+    </div>
+    <div class="hap-kpi">
+        <div class="kpi-label">Tempo medio consulta</div>
+        <div class="kpi-value">18 min</div>
+        <div class="kpi-delta down">-1 min</div>
+    </div>
+</div>
+
+{# Graficos #}
+<div class="hap-section-title">Indicadores clinicos</div>
+
+<div class="hap-grid-2" style="margin-bottom: 24px;">
+    <div class="hap-card">
+        <div class="hap-card-title">Sinistralidade mensal</div>
+        <canvas id="chart-sinistralidade" height="200"></canvas>
+    </div>
+    <div class="hap-card">
+        <div class="hap-card-title">Distribuicao por especialidade</div>
+        <canvas id="chart-especialidade" height="200"></canvas>
+    </div>
+</div>
+
+{# Tabela #}
+<div class="hap-section-title">Ultimas ocorrencias</div>
+
+<div class="hap-table-wrap">
+    <table class="hap-table">
+        <thead>
+            <tr>
+                <th>Unidade</th>
+                <th>Tipo</th>
+                <th>Data</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Fortaleza Centro</td>
+                <td>Consulta</td>
+                <td>12/04/2026</td>
+                <td><span class="hap-badge success">Concluido</span></td>
+            </tr>
+            <tr>
+                <td>Recife Norte</td>
+                <td>Exame</td>
+                <td>11/04/2026</td>
+                <td><span class="hap-badge warning">Em andamento</span></td>
+            </tr>
+            <tr>
+                <td>Manaus Sul</td>
+                <td>Internacao</td>
+                <td>10/04/2026</td>
+                <td><span class="hap-badge danger">Pendente</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const meses = ["Out", "Nov", "Dez", "Jan", "Fev", "Mar"];
+
+hapLineChart(
+    document.getElementById("chart-sinistralidade"),
+    meses,
+    [{ label: "Sinistralidade (%)", data: [74.2, 73.8, 73.1, 72.9, 72.6, 72.4] }]
+);
+
+hapDonutChart(
+    document.getElementById("chart-especialidade"),
+    ["Clinica Geral", "Cardiologia", "Ortopedia", "Pediatria", "Outros"],
+    [38, 18, 15, 12, 17]
+);
+</script>
+{% endblock %}

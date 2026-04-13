@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hapvida{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/hap.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+<div class="hap-topbar-stripe"></div>
+
+<div class="hap-layout">
+
+    {# Sidebar #}
+    <aside class="hap-sidebar">
+        <div class="hap-logo">
+            <div class="hap-logo-text">Hapvida<span>.</span></div>
+        </div>
+
+        <nav class="hap-nav">
+            {% block nav %}
+            <div class="hap-nav-label">Principal</div>
+            <a href="{{ url_for('index') }}" class="{{ 'active' if request.endpoint == 'index' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                Dashboard
+            </a>
+            {% endblock %}
+        </nav>
+
+        <div style="padding: 16px 20px; border-top: 1px solid var(--hap-gray-200); margin-top: auto;">
+            <div style="font-size: 11px; color: var(--hap-gray-500); font-weight: 600;">Gerencia Medica de IA</div>
+        </div>
+    </aside>
+
+    {# Conteudo principal #}
+    <div class="hap-main">
+        <main class="hap-content">
+
+            {# Flash messages do Flask #}
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="hap-flash">
+                {% for category, message in messages %}
+                <div class="hap-alert {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+            {# Header da pagina #}
+            {% if page_title %}
+            <div class="hap-page-header">
+                <div class="hap-stripe"></div>
+                <h1 class="hap-title">{{ page_title }}</h1>
+                {% if page_subtitle %}
+                <p class="hap-subtitle">{{ page_subtitle }}</p>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            {# Conteudo da pagina #}
+            {% block content %}{% endblock %}
+
+            {# Footer #}
+            <div class="hap-footer">
+                <div>Hapvida NotreDame Intermedica</div>
+                <div>{% block footer_right %}Gerencia Medica de IA{% endblock %}</div>
+            </div>
+
+        </main>
+    </div>
+
+</div>
+
+{# Chart.js via CDN #}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/hap-charts.js') }}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>
